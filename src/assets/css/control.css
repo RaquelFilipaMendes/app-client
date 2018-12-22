@@ -1,0 +1,108 @@
+
+.control-group {
+    margin: 5px;
+}
+
+.input-text {
+    height: 40px;
+    border: solid 2px #aaa;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-top: 0px;
+    height: 100px;
+    background: white;
+}
+
+.info-error {
+    font-size: 20px;
+    color: red;
+}
+
+.info-success {
+    font-size: 20px;
+    color: grey;
+}
+
+.fa.fa-info-circle.info-success:hover .tooltip-icon-success {
+    visibility: visible;
+}
+
+.fa.fa-info-circle.info-error:hover .tooltip-icon-error {
+    visibility: visible;
+}
+
+.on {
+    margin-right: 5px;
+    text-transform: lowercase;
+}
+
+.btn-xs {
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    float: right;
+    margin-right: 5%;
+}
+
+.disable-inputs {
+    pointer-events:none;
+}
+
+.row-label {
+    text-transform: capitalize;
+}
+
+.container-checkbox-group {
+    margin-top: 1%;
+}
+
+.label-toogle {
+    font-size: 16px;
+    margin: 2%;
+}
+
+.button-load {
+    margin: 15%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgb(78, 187, 120);
+    height: 40px;
+}
+
+#country-control-group {
+    width: 200px;
+}
+
+#status-control-group {
+    width: 200px;
+}
+
+.content-filters {
+    display: flex;
+}
+
+.button-search {
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #363d42;
+    border: 0;
+    height: 35px;
+    width: 80px;
+    padding: 0 10px;
+    margin-top: 25px;
+}
