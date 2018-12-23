@@ -1,6 +1,12 @@
+import {
+    ASYNC_START,
+    ASYNC_END,
+} from './actions/phoneNumbers';
+
+
 const promiseMiddleware = store => next => action => {
     if (isPromise(action.payload)) {
-        store.dispatch({type: 'ASYNC_START', subtype: action.type});
+        store.dispatch({type: ASYNC_START, subtype: action.type});
 
         const currentView = store.getState().viewChangeCounter;
         const skipTracking = action.skipTracking;
@@ -13,7 +19,7 @@ const promiseMiddleware = store => next => action => {
                 }
 
                 action.payload = res;
-                store.dispatch({type: 'ASYNC_END', promise: action.payload});
+                store.dispatch({type: ASYNC_END, promise: action.payload});
                 store.dispatch(action);
             },
             error => {
@@ -25,7 +31,7 @@ const promiseMiddleware = store => next => action => {
                 action.error = true;
                 action.payload = error.data;
                 if (!action.skipTracking) {
-                    store.dispatch({type: 'ASYNC_END', promise: action.payload});
+                    store.dispatch({type: ASYNC_END, promise: action.payload});
                 }
                 store.dispatch(action);
             }

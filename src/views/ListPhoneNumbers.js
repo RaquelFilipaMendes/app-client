@@ -4,9 +4,11 @@ import {Control} from './Control';
 import ReactTable from 'react-table';
 import app from '../constants/base';
 import 'react-table/react-table.css';
+import {phoneNumbersList, countriesList} from '../services/ApiClient';
 import {
     UPDATE_FILTERS,
-    LOAD_LIST
+    LOAD_LIST,
+    LOAD_COUNTRIES
 } from '../actions/phoneNumbers';
 
 
@@ -18,6 +20,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
+    onListLoaded: value =>
+        dispatch({type: LOAD_LIST, payload: value}),
+    loadCountries: value =>
+        dispatch({type: LOAD_COUNTRIES, payload: value}),
     onChangeFilterCountry: value =>
         dispatch({type: UPDATE_FILTERS, key: 'country', value: value}),
     onChangeFilterStatus: value =>
@@ -35,6 +41,23 @@ class ListPhoneNumbers extends Component {
 
 
     componentWillMount() {
+        this.props.loadCountries(countriesList());
+        this.props.onListLoaded(phoneNumbersList());
+
+        this.applyFilters = () => {
+            const filters = this.props.phoneNumbers.filters;
+
+            let filter = {};
+            if (filters.status) {
+                filter.status = filters.status;
+            }
+
+            if (filters.country) {
+                filter.country = filters.country;
+            }
+
+            this.props.onListLoaded(phoneNumbersList(filter));
+        };
     }
 
     componentWillUpdate() {
@@ -43,11 +66,11 @@ class ListPhoneNumbers extends Component {
     render() {
         const columns = [{
             Header: 'Country',
-            accessor: 'country',
+            accessor: 'countryName',
             headerStyle: {textAlign: 'left', color: '#000000'},
         }, {
             Header: 'State',
-            accessor: 'state',
+            accessor: 'status',
             headerStyle: {textAlign: 'left', color: '#000000'},
         }, {
             Header: 'Country Code',
@@ -55,9 +78,23 @@ class ListPhoneNumbers extends Component {
             headerStyle: {textAlign: 'left', color: '#000000'}
         }, {
             Header: 'Phone Number',
-            accessor: 'phoneNumber',
-            headerStyle: {textAlign: 'left', color: '#000000'}
+            accessor: 'phoneNumbers',
+            headerStyle: {textAlign: 'left', color: '#000000'},
+            Cell: (props) => {
+                return props.row.phoneNumbers.split(' ').pop();
+            }
         }];
+
+        const countries = this.props.phoneNumbers.countries;
+        let countriesName = [];
+        if (countries !== undefined && countries.length > 0) {
+            for (let i = 0; i < countries.length; i++) {
+                countriesName.push({
+                    value: countries[i].countryCode,
+                    label: countries[i].countryName,
+                });
+            }
+        }
 
         return (
             <div>
@@ -65,7 +102,7 @@ class ListPhoneNumbers extends Component {
                 <div className="content-filters">
                     <Control label="Country : " type="select" name="country"
                              id="country"
-                             options={null}
+                             options={countriesName}
                              value={this.props.phoneNumbers.filters.country}
                              onChange={this.changeFilterCountry}/>
                     <Control label="State : " type="select" name="State"
@@ -74,11 +111,12 @@ class ListPhoneNumbers extends Component {
                              placeholder=""
                              value={this.props.phoneNumbers.filters.status}
                              onChange={this.changeFilterStatus}/>
-                    <button className="button-search" onClick={() => null}>Search
+                    <button className="button-search"onClick={this.applyFilters}>Search
                     </button>
                 </div>
                 <div className="table-phonesNumbers">
                     <ReactTable
+                        data={this.props.phoneNumbers.list}
                         columns={columns}
                         defaultPageSize={20}
                         style={{border: 'none'}}
